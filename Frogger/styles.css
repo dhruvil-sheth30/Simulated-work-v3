@@ -1,0 +1,121 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #2c3e50;
+    font-family: Arial, sans-serif;
+}
+
+.game-container {
+    background-color: #34495e;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+h3 {
+    color: #ecf0f1;
+    text-align: center;
+    margin: 10px 0;
+}
+
+#start-pause-button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#start-pause-button:hover {
+    background-color: #219a52;
+}
+
+.grid {
+    border: 2px solid #2c3e50;
+    border-radius: 10px;
+    height: 360px;
+    width: 360px;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #95a5a6;
+    gap: 1px;
+    padding: 1px;
+}
+
+.grid div {
+    height: 39px;
+    width: 39px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.ending-block {
+    background-color: #e74c3c;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
+}
+
+.starting-block {
+    background-color: #3498db;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+.l1, .l2, .l3 {
+    background-color: #8b4513;
+    border: 1px solid #a0522d;
+    box-sizing: border-box;
+}
+
+.l4, .l5 {
+    background-color: #87ceeb;
+    border: 1px solid #b0e0e6;
+    box-sizing: border-box;
+}
+
+.c1 {
+    background-color: #2c3e50;
+    border-radius: 3px;
+    box-shadow: 0 0 3px rgba(0,0,0,0.3);
+}
+
+.c2, .c3 {
+    background-color: #bdc3c7;
+    border-radius: 3px;
+    box-shadow: 0 0 3px rgba(0,0,0,0.2);
+}
+
+.frog {
+    background-color: #2ecc71;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(46, 204, 113, 0.6);
+    border: 2px solid #27ae60;
+    box-sizing: border-box;
+    transform: scale(0.9);
+}
+
+
+.car-left, .car-right, .log-left, .log-right {
+    transition: all 0.3s ease;
+}
+
+
+.frog:hover {
+    transform: scale(0.95);
+    box-shadow: 0 0 12px rgba(46, 204, 113, 0.8);
+}
+
+
+.grid div:not(.frog) {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-sizing: border-box;
+}
