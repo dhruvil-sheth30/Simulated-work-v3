@@ -1,0 +1,117 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #90c1f3, #60e98e);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+    text-align: center;
+    color: #333;
+}
+
+h1 {
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+    color: #444;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#result {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #333;
+    margin-top: 20px;
+    text-transform: uppercase;
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: repeat(4, 150px);
+    gap: 15px;
+    margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #3e3e3e;
+    transition: background-color 0.5s ease, transform 0.3s ease;
+}
+
+img:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
+    background-color: #5f6366;
+}
+
+img[src='img/blank.png'] {
+    background-color: #444;
+}
+
+img[src='img/white.png'] {
+    background-color: #fff;
+    box-shadow: none;
+}
+
+@keyframes flipCard {
+    0% {
+        transform: rotateY(0deg);
+    }
+    50% {
+        transform: rotateY(90deg);
+    }
+    100% {
+        transform: rotateY(180deg);
+    }
+}
+
+img.flipping {
+    animation: flipCard 0.5s ease;
+}
+
+#result.congratulations {
+    font-size: 1.6rem;
+    color: #28a745;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 40%, 60%, 80%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@media (max-width: 768px) {
+    #grid {
+        grid-template-columns: repeat(3, 120px);
+    }
+
+    img {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    #grid {
+        grid-template-columns: repeat(2, 100px);
+    }
+
+    img {
+        width: 100px;
+        height: 100px;
+    }
+}
