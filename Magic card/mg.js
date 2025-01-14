@@ -23,33 +23,45 @@ document.addEventListener('DOMContentLoaded', () => {
     let cardsWon = [];
 
     function createBoard() {
-        cardArray.forEach((_, i) => {
-            const card = document.createElement('img');
-            card.setAttribute('src', 'assets/blank.png');
-            card.setAttribute('data-id', i);
-            card.addEventListener('click', flipCard);
-            grid.appendChild(card);
+        cardArray.forEach((card, i) => {
+            const cardElement = document.createElement('div');
+            cardElement.classList.add('memory-card');
+            cardElement.setAttribute('data-id', i);
+
+            const frontFace = document.createElement('div');
+            frontFace.classList.add('card-front');
+            const frontImg = document.createElement('img');
+            frontImg.src = card.img;
+            frontFace.appendChild(frontImg);
+
+            const backFace = document.createElement('div');
+            backFace.classList.add('card-back');
+            const backImg = document.createElement('img');
+            backImg.src = 'assets/blank.png';
+            backFace.appendChild(backImg);
+
+            cardElement.appendChild(frontFace);
+            cardElement.appendChild(backFace);
+            cardElement.addEventListener('click', flipCard);
+            grid.appendChild(cardElement);
         });
     }
 
     function checkForMatch() {
-        const cards = document.querySelectorAll('img');
+        const cards = document.querySelectorAll('.memory-card');
         const [optionOneId, optionTwoId] = cardsChosenId;
 
         if (optionOneId === optionTwoId) {
-            cards[optionOneId].setAttribute('src', 'assets/blank.png');
-            alert('You clicked the same card!');
+            cards[optionOneId].classList.remove('flip');
         } else if (cardsChosen[0] === cardsChosen[1]) {
-            alert('You found a match!');
-            cards[optionOneId].setAttribute('src', 'assets/white.png');
-            cards[optionTwoId].setAttribute('src', 'assets/white.png');
             cards[optionOneId].removeEventListener('click', flipCard);
             cards[optionTwoId].removeEventListener('click', flipCard);
             cardsWon.push(cardsChosen);
         } else {
-            cards[optionOneId].setAttribute('src', 'assets/blank.png');
-            cards[optionTwoId].setAttribute('src', 'assets/blank.png');
-            alert('Try again!');
+            setTimeout(() => {
+                cards[optionOneId].classList.remove('flip');
+                cards[optionTwoId].classList.remove('flip');
+            }, 1000);
         }
 
         cardsChosen = [];
@@ -58,15 +70,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (cardsWon.length === cardArray.length / 2) {
             resultDisplay.textContent = 'Congratulations! You found them all!';
+            resultDisplay.classList.add('congratulations');
         }
     }
 
     function flipCard() {
         const cardId = this.getAttribute('data-id');
-        if (!cardsChosenId.includes(cardId)) {
+        if (!cardsChosenId.includes(cardId) && cardsChosen.length < 2) {
+            this.classList.add('flip');
             cardsChosen.push(cardArray[cardId].name);
             cardsChosenId.push(cardId);
-            this.setAttribute('src', cardArray[cardId].img);
+            
             if (cardsChosen.length === 2) {
                 setTimeout(checkForMatch, 500);
             }
