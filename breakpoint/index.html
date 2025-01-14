@@ -4,17 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Breakout Game</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        
+        canvas {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .score {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+
+        .lives {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        
+        .score, .lives {
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <div class="game-container">
-        <div id="score">Score: <span>0</span></div>
-        <div id="game-board">
-            <div id="paddle"></div>
-            <div id="ball"></div>
-        </div>
-        <div id="message"></div>
-    </div>
+    <div class="score">Score: <span id="score">0</span></div>
+    <canvas id="game-board" width="800" height="600"></canvas>
     <script src="index.js"></script>
 </body>
 </html>
