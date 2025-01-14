@@ -6,12 +6,25 @@ const logsLeft = document.querySelectorAll('.log-left')
 const logsRight = document.querySelectorAll('.log-right')
 const carsLeft = document.querySelectorAll('.car-left')
 const carsRight = document.querySelectorAll('.car-right')
+const scoreDisplay = document.createElement('span');
+scoreDisplay.id = 'score';
+const livesDisplay = document.createElement('span');
+livesDisplay.id = 'lives';
 
 let currentIndex = 76
 const width = 9
 let timerId
 let outcomeTimerId
 let currentTime = 20
+let score = 0;
+let lives = 3;
+
+document.querySelector('.game-container').insertAdjacentHTML('afterbegin', `
+    <div class="game-stats">
+        <h3>Lives: <span id="lives">3</span></h3>
+        <h3>Score: <span id="score">0</span></h3>
+    </div>
+`);
 
 function moveFrog(e) {
     squares[currentIndex].classList.remove('frog')
@@ -142,6 +155,10 @@ function resetGame() {
     squares[currentIndex].classList.remove('frog');
     currentIndex = 76;
     squares[currentIndex].classList.add('frog');
+    score = 0;
+    lives = 3;
+    updateScore(0);
+    updateLives(0);
 }
 
 function lose() {
@@ -151,25 +168,59 @@ function lose() {
         squares[currentIndex].classList.contains('l5') ||
         currentTime <= 0
     ) {
-        resultDisplay.textContent = 'Game Over!';
-        resultDisplay.style.color = '#e74c3c';
-        clearInterval(timerId);
-        clearInterval(outcomeTimerId);
-        squares[currentIndex].classList.remove('frog');
-        document.removeEventListener('keyup', moveFrog);
-        updateButtonText(false);
+        updateLives(-1);
+        if (lives > 0) {
+            squares[currentIndex].classList.remove('frog');
+            currentIndex = 76;
+            squares[currentIndex].classList.add('frog');
+            currentTime = 20;
+            timeLeftDisplay.textContent = currentTime;
+            resultDisplay.textContent = `Ouch! Lives remaining: ${lives}`;
+            resultDisplay.style.color = '#e74c3c';
+        }
     }
 }
 
 function win() {
     if (squares[currentIndex].classList.contains('ending-block')) {
-        resultDisplay.textContent = 'You Win! 🎉';
+        updateScore(100);
+        resultDisplay.textContent = `You reached the goal! +100 points`;
         resultDisplay.style.color = '#2ecc71';
-        clearInterval(timerId);
-        clearInterval(outcomeTimerId);
-        document.removeEventListener('keyup', moveFrog);
-        updateButtonText(false);
+        
+        squares[currentIndex].classList.remove('frog');
+        currentIndex = 76;
+        squares[currentIndex].classList.add('frog');
+        
+        const timeBonus = currentTime * 10;
+        updateScore(timeBonus);
+        resultDisplay.textContent += ` Time Bonus: +${timeBonus}`;
+        
+        currentTime = 20;
+        timeLeftDisplay.textContent = currentTime;
     }
+}
+
+function updateScore(points) {
+    score += points;
+    document.querySelector('#score').textContent = score;
+}
+
+function updateLives(change) {
+    lives += change;
+    document.querySelector('#lives').textContent = lives;
+    if (lives <= 0) {
+        gameOver();
+    }
+}
+
+function gameOver() {
+    resultDisplay.textContent = `Game Over! Final Score: ${score}`;
+    resultDisplay.style.color = '#e74c3c';
+    clearInterval(timerId);
+    clearInterval(outcomeTimerId);
+    squares[currentIndex].classList.remove('frog');
+    document.removeEventListener('keyup', moveFrog);
+    updateButtonText(false);
 }
 
 startPauseButton.addEventListener('click', () => {
@@ -196,3 +247,26 @@ controlsDiv.innerHTML = `
     </p>
 `;
 document.querySelector('.game-container').appendChild(controlsDiv);
+
+const styleSheet = document.createElement('style');
+styleSheet.textContent = `
+    .game-stats {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        background: rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        border-radius: 8px;
+    }
+    
+    .game-stats h3 {
+        margin: 0;
+        color: #ecf0f1;
+    }
+    
+    #score, #lives {
+        font-weight: bold;
+        color: #2ecc71;
+    }
+`;
+document.head.appendChild(styleSheet);
