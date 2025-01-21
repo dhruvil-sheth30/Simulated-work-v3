@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetButton = document.getElementById('reset-button');
     const shootSound = document.getElementById('shoot-sound');
     const explosionSound = document.getElementById('explosion-sound');
-
+    const gameOverSound = document.getElementById('game-over-sound');
     const width = 15;
     const cellCount = width * width;
     const cells = [];
@@ -19,6 +19,27 @@ document.addEventListener('DOMContentLoaded', () => {
     let score = 0;
     let lives = 3;
     let isGameOver = false;
+
+    function playShootSound() {
+        if (shootSound) {
+            shootSound.currentTime = 0;
+            shootSound.play().catch(error => console.log('Error playing sound:', error));
+        }
+    }
+
+    function playExplosionSound() {
+        if (explosionSound) {
+            explosionSound.currentTime = 0;
+            explosionSound.play().catch(error => console.log('Error playing sound:', error));
+        }
+    }
+
+    function playGameOverSound() {
+        if (gameOverSound) {
+            gameOverSound.currentTime = 0;
+            gameOverSound.play().catch(error => console.log('Error playing sound:', error));
+        }
+    }
 
     function createGrid() {
         grid.innerHTML = '';
@@ -57,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isGameOver || e.key !== 'ArrowUp') return;
 
         let laserIndex = shooterIndex;
+        playShootSound();
 
         function moveLaser() {
             if (laserIndex >= width) {
@@ -67,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     clearInterval(laserId);
                     cells[laserIndex].classList.remove('laser', 'invader');
                     cells[laserIndex].classList.add('boom');
-                    explosionSound.play();
+                    playExplosionSound();
 
                     setTimeout(() => cells[laserIndex].classList.remove('boom'), 500);
 
@@ -87,7 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        shootSound.play();
         const laserId = setInterval(moveLaser, 100);
     });
 
@@ -119,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function gameOver(message) {
         isGameOver = true;
         clearInterval(invaderInterval);
+        playGameOverSound();
         setTimeout(() => alert(`${message}\nScore: ${score}`), 100);
     }
 
